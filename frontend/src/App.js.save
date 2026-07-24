@@ -1,0 +1,351 @@
+import React, { useEffect, useState } from "react";
+import "./App.css";
+import api from "./services/api";
+
+import BookForm from "./components/BookForm";
+import BookList from "./components/BookList";
+import SearchBar from "./components/SearchBar";
+
+function App() {
+
+  const [books, setBooks] = useState([]);
+  const [search, setSearch] = useState("");
+
+  const [categoryFilter, setCategoryFilter] = useState("All");
+  const [searchKeyword, setSearchKeyword] = useState("");
+const [showAddForm,setShowAddForm] = useState(false);
+const [darkMode, setDarkMode] = useState(false);
+const [toast,setToast] = useState(null);
+const [loading, setLoading] = useState(false);
+const [error, setError] = useState("");
+const [currentPage,setCurrentPage]=useState(1);
+const [sort,setSort] = useState("default");
+const [totalPages,setTotalPages]=useState(1);
+const loadBooks = async () => {
+
+  try {
+
+    setLoading(true);
+
+    setError("");
+
+
+const response = await api.get(
+ `/books?page=${currentPage}&limit=10&sort=${sort}`
+);
+
+    setBooks(response.data.books);
+
+
+    setTotalPages(response.data.totalPages);
+
+
+  }
+
+  catch (err) {
+
+    console.log(err);
+
+    setError("Failed to load books");
+
+  }
+
+  finally {
+
+    setLoading(false);
+
+  }
+
+};
+  const showToast = (message,type)=>{
+
+    setToast({
+      message,
+      type
+    });
+
+
+    setTimeout(()=>{
+
+      setToast(null);
+
+    },3000);
+
+  };
+
+useEffect(()=>{
+
+loadBooks();
+
+},[currentPage,sort]);
+const categories = [
+  "All",
+  ...new Set(books.map((book) => book.category))
+];
+
+const filteredBooks = books.filter((book) => {
+
+  const matchesCategory =
+    categoryFilter === "All" ||
+    book.category === categoryFilter;
+
+  const keyword = searchKeyword.toLowerCase();
+
+
+  const matchesSearch =
+    keyword === "" ||
+    book.title.toLowerCase().includes(keyword) ||
+    book.author.toLowerCase().includes(keyword) ||
+    book.category.toLowerCase().includes(keyword);
+
+  return matchesCategory && matchesSearch;
+
+});
+  return (
+
+    <div className={darkMode ? "app dark" : "app"}>
+
+      {/* Navbar */}
+
+<nav className="navbar">
+
+  <div>
+    <h1>📚 Online Book Store</h1>
+    <span>React • Node • Docker • Kubernetes</span>
+  </div>
+
+  <button
+    className="themeToggle"
+    onClick={() => setDarkMode(!darkMode)}
+    title={darkMode ? "Light Mode" : "Dark Mode"}
+  >
+    {darkMode ? "☀️" : "🌙"}
+  </button>
+
+</nav>
+      {/* Main Container */}
+
+      <div className="container">
+	<div className="dashboard">
+
+  <div className="card">
+    <div className="icon">📚</div>
+    <h2>{filteredBooks.length}</h2>
+    <p>Total Books</p>
+  </div>
+
+  <div className="card">
+    <div className="icon">📂</div>
+    <h2>
+     {new Set(filteredBooks.map(book => book.category)).size}
+    </h2>
+    <p>Categories</p>
+  </div>
+
+  <div className="card">
+    <div className="icon">💰</div>
+    <h2>
+      ₹
+	{filteredBooks.length
+  ? Math.round(
+      filteredBooks.reduce(
+        (sum, book) => sum + Number(book.price),
+        0
+      ) / filteredBooks.length
+    )
+  : 0}
+    </h2>
+    <p>Average Price</p>
+  </div>
+
+  <div className="card">
+    <div className="icon">🔍</div>
+	<h2>{filteredBooks.length}</h2>
+    <p>Search Results</p>
+  </div>
+
+</div>
+
+<SearchBar
+  searchKeyword={searchKeyword}
+  setSearchKeyword={setSearchKeyword}
+  categoryFilter={categoryFilter}
+  setCategoryFilter={setCategoryFilter}
+  categories={categories}
+/>
+<div className="sortBox">
+
+<label>
+Sort By:
+</label>
+
+
+<select
+
+value={sort}
+
+onChange={(e)=>{
+
+setSort(e.target.value);
+
+setCurrentPage(1);
+
+}}
+
+>
+
+<option value="default">
+Default
+</option>
+
+
+<option value="price_low">
+Price Low → High
+</option>
+
+
+<option value="price_high">
+Price High → Low
+</option>
+
+
+<option value="title_az">
+Title A → Z
+</option>
+
+
+<option value="title_za">
+Title Z → A
+</option>
+
+
+</select>
+
+
+</div>
+
+{
+loading && (
+
+<div className="loader">
+
+Loading Books...
+
+<span>
+⏳
+</span>
+
+</div>
+
+)
+}
+{
+error && (
+
+<div className="errorBox">
+
+❌ {error}
+
+<button onClick={loadBooks}>
+Retry
+</button>
+
+</div>
+
+)
+}
+
+        <BookForm loadBooks={loadBooks} />
+
+<BookList
+  books={filteredBooks}
+  loadBooks={loadBooks}
+  showToast={showToast}
+  searchKeyword={searchKeyword}
+/>
+{/* Pagination */}
+
+<div className="pagination">
+
+
+{
+Array.from(
+{ length: totalPages },
+(_, index)=>(
+
+<button
+
+key={index}
+
+onClick={()=>setCurrentPage(index + 1)}
+
+className={
+currentPage === index + 1
+? "activePage"
+: ""
+}
+
+>
+
+{index + 1}
+
+</button>
+
+)
+
+)
+}
+
+
+<button
+
+disabled={currentPage === totalPages}
+
+onClick={()=>setCurrentPage(currentPage + 1)}
+
+>
+
+Next
+
+</button>
+
+
+</div>
+      </div>
+{
+  toast && (
+
+    <div className={`toast ${toast.type}`}>
+
+      {toast.type === "success"
+        ? "✅ "
+        : "❌ "
+      }
+
+      {toast.message}
+
+    </div>
+
+  )
+}
+
+      {/* Footer */}
+
+<footer>
+
+© 2026 Online Book Store
+
+<br />
+
+Developed with ❤️ using
+
+React • Node • Docker • Kubernetes
+
+</footer>
+    </div>
+
+  );
+
+}
+
+export default App;

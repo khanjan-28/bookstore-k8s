@@ -1,0 +1,1117 @@
+/* =========================
+   USER WEBSITE PREMIUM CSS
+========================= */
+
+
+/* NAVBAR */
+
+.user-navbar{
+
+display:flex;
+justify-content:space-between;
+align-items:center;
+
+padding:20px 60px;
+
+background:#111827;
+
+color:white;
+
+position:sticky;
+top:0;
+
+z-index:1000;
+
+}
+
+
+.logo{
+
+font-size:28px;
+font-weight:700;
+
+}
+
+
+.nav-links{
+
+display:flex;
+gap:30px;
+
+list-style:none;
+
+margin:0;
+
+}
+
+
+.nav-links a{
+
+color:white;
+
+text-decoration:none;
+
+font-size:16px;
+
+transition:.3s;
+
+}
+
+
+.nav-links a:hover{
+
+color:#60a5fa;
+
+}
+
+
+/* HERO */
+
+
+.hero{
+
+min-height:450px;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+background:
+linear-gradient(
+135deg,
+#2563eb,
+#7c3aed
+);
+
+color:white;
+
+text-align:center;
+
+padding:40px;
+
+}
+
+
+.hero-content h1{
+
+font-size:48px;
+
+font-weight:800;
+
+}
+
+
+.hero-content p{
+
+font-size:20px;
+
+max-width:650px;
+
+margin:20px auto;
+
+line-height:1.6;
+
+}
+
+
+.hero-content button{
+
+padding:14px 35px;
+
+border:none;
+
+border-radius:30px;
+
+background:white;
+
+color:#2563eb;
+
+font-weight:600;
+
+cursor:pointer;
+
+transition:.3s;
+
+}
+
+
+.hero-content button:hover{
+
+transform:scale(1.05);
+
+}
+
+
+/* SECTION COMMON */
+
+
+.featured,
+.categories{
+
+padding:60px;
+
+text-align:center;
+
+}
+
+
+.featured h2,
+.categories h2{
+
+font-size:35px;
+
+margin-bottom:35px;
+
+}
+
+
+/* BOOK GRID */
+
+
+.book-grid{
+
+display:grid;
+
+grid-template-columns:
+repeat(4,1fr);
+
+gap:25px;
+
+}
+
+
+/* BOOK CARD */
+
+
+.book-card{
+
+background:white;
+
+padding:25px;
+
+border-radius:18px;
+
+box-shadow:
+0 10px 30px rgba(0,0,0,0.12);
+
+transition:.3s;
+
+}
+
+
+.book-card:hover{
+
+transform:translateY(-10px);
+
+}
+
+
+/* CATEGORY */
+
+
+.category-grid{
+
+display:grid;
+
+grid-template-columns:
+repeat(3,1fr);
+
+gap:25px;
+
+}
+
+
+.category-card{
+
+background:white;
+
+padding:35px;
+
+border-radius:18px;
+
+box-shadow:
+0 10px 25px rgba(0,0,0,.1);
+
+transition:.3s;
+
+}
+
+
+.category-card:hover{
+
+transform:translateY(-8px);
+
+background:#eff6ff;
+
+}
+
+
+/* FOOTER */
+
+
+.user-footer{
+
+background:#111827;
+
+color:white;
+
+text-align:center;
+
+padding:45px 20px;
+
+}
+
+
+.footer-links{
+
+display:flex;
+
+justify-content:center;
+
+gap:35px;
+
+margin:25px 0;
+
+}
+
+
+.footer-links span{
+
+cursor:pointer;
+
+}
+
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+
+.user-navbar{
+
+flex-direction:column;
+
+gap:20px;
+
+padding:20px;
+
+}
+
+
+.nav-links{
+
+flex-wrap:wrap;
+
+justify-content:center;
+
+}
+
+
+.hero-content h1{
+
+font-size:32px;
+
+}
+
+
+.book-grid{
+
+grid-template-columns:1fr;
+
+}
+
+
+.category-grid{
+
+grid-template-columns:1fr;
+
+}
+
+
+.featured,
+.categories{
+
+padding:30px 15px;
+
+}
+
+
+}
+/*search-box*/
+.search-box{
+
+width:100%;
+max-width:450px;
+
+padding:14px 18px;
+
+margin:0 auto 30px;
+
+display:block;
+
+border:1px solid #ddd;
+
+border-radius:10px;
+
+font-size:16px;
+
+outline:none;
+
+}
+
+.search-box:focus{
+
+border-color:#2563eb;
+
+box-shadow:0 0 8px rgba(37,99,235,.2);
+
+}
+/* =========================
+   LOGIN REGISTER AUTH UI
+========================= */
+
+
+.auth-container{
+
+min-height:100vh;
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+background:
+linear-gradient(
+135deg,
+#2563eb,
+#7c3aed
+);
+
+padding:20px;
+
+}
+
+
+.auth-box{
+
+width:100%;
+
+max-width:420px;
+
+background:white;
+
+padding:40px;
+
+border-radius:20px;
+
+box-shadow:
+0 20px 50px rgba(0,0,0,0.25);
+
+}
+
+
+.auth-box h2{
+
+text-align:center;
+
+font-size:32px;
+
+margin-bottom:30px;
+
+color:#111827;
+
+}
+
+
+.auth-box input{
+
+width:100%;
+
+padding:14px 16px;
+
+margin-bottom:18px;
+
+border:1px solid #ddd;
+
+border-radius:10px;
+
+font-size:16px;
+
+outline:none;
+
+}
+
+
+.auth-box input:focus{
+
+border-color:#2563eb;
+
+box-shadow:
+0 0 8px rgba(37,99,235,.3);
+
+}
+
+
+.auth-box button{
+
+width:100%;
+
+padding:14px;
+
+border:none;
+
+border-radius:30px;
+
+background:#2563eb;
+
+color:white;
+
+font-size:17px;
+
+font-weight:600;
+
+cursor:pointer;
+
+transition:.3s;
+
+}
+
+
+.auth-box button:hover{
+
+background:#1d4ed8;
+
+transform:translateY(-2px);
+
+}
+
+
+.auth-box p{
+
+text-align:center;
+
+margin-top:20px;
+
+font-weight:500;
+
+color:#2563eb;
+
+}
+.auth-link{
+
+color:#2563eb;
+
+cursor:pointer;
+
+margin-left:5px;
+
+font-weight:600;
+
+}
+
+
+.auth-link:hover{
+
+text-decoration:underline;
+
+}
+.auth-message{
+
+text-align:center;
+
+margin-top:15px;
+
+font-weight:600;
+
+color:#2563eb;
+
+}
+/* ================================
+   USER BOOKS PAGE
+================================ */
+
+.books-page{
+    padding:40px;
+}
+
+
+.books-page h1{
+    text-align:center;
+    font-size:32px;
+    margin-bottom:30px;
+    color:#333;
+}
+
+
+/* Search + Filter */
+
+.book-filter{
+    display:flex;
+    justify-content:center;
+    gap:20px;
+    margin-bottom:35px;
+}
+
+
+.book-filter input,
+.book-filter select{
+
+    width:280px;
+    padding:12px 15px;
+
+    border-radius:10px;
+    border:1px solid #ddd;
+
+    font-size:15px;
+    outline:none;
+
+    background:white;
+
+}
+
+
+.book-filter input:focus,
+.book-filter select:focus{
+
+    border-color:#667eea;
+
+}
+
+
+
+/* Books Grid */
+
+.book-grid{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(auto-fit,minmax(230px,1fr));
+
+    gap:25px;
+
+}
+
+
+/* Mobile */
+
+@media(max-width:600px){
+
+.books-page{
+
+    padding:20px;
+
+}
+
+
+.book-filter{
+
+    flex-direction:column;
+    align-items:center;
+
+}
+
+
+.book-filter input,
+.book-filter select{
+
+    width:100%;
+
+}
+
+}
+.book-actions{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    margin-top:15px;
+}
+
+.book-actions button{
+    width:100%;
+    border:none;
+    padding:10px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:600;
+}
+
+.details-btn{
+    background:#2563eb;
+    color:white;
+}
+
+.cart-btn{
+    background:#16a34a;
+    color:white;
+}
+
+.wishlist-btn{
+    background:#e11d48;
+    color:white;
+}
+/* ==============================
+   Mobile Responsive
+============================== */
+
+@media (max-width:768px){
+
+.user-navbar{
+
+display:flex;
+flex-direction:column;
+padding:15px;
+
+}
+
+.nav-links{
+
+display:flex;
+flex-wrap:wrap;
+justify-content:center;
+gap:10px;
+margin-top:15px;
+
+}
+
+.books-page{
+
+padding:20px;
+
+}
+
+.book-grid{
+
+display:grid;
+grid-template-columns:1fr;
+gap:20px;
+
+}
+
+.book-card{
+
+width:100%;
+
+}
+
+.book-image{
+
+height:250px;
+object-fit:cover;
+
+}
+
+.book-filter{
+
+display:flex;
+flex-direction:column;
+gap:15px;
+
+}
+
+.book-filter input,
+.book-filter select{
+
+width:100%;
+
+}
+
+.book-actions{
+
+display:flex;
+flex-direction:column;
+gap:10px;
+
+}
+
+.book-actions button{
+
+width:100%;
+
+}
+
+}
+/* ==========================================
+   EMPTY STATE
+========================================== */
+
+.empty-state{
+    max-width:500px;
+    margin:60px auto;
+    padding:50px 30px;
+    text-align:center;
+    background:#fff;
+    border-radius:20px;
+    box-shadow:0 10px 30px rgba(0,0,0,.08);
+}
+
+.empty-state h2{
+    font-size:2rem;
+    margin-bottom:15px;
+    color:#222;
+}
+
+.empty-state p{
+    color:#666;
+    font-size:1rem;
+    margin-bottom:25px;
+}
+
+.empty-state button{
+    padding:12px 28px;
+    border:none;
+    border-radius:10px;
+    background:#4f46e5;
+    color:#fff;
+    font-size:1rem;
+    font-weight:600;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.empty-state button:hover{
+    transform:translateY(-2px);
+    background:#3730a3;
+}
+/* =========================================
+   PREMIUM REVIEWS SECTION
+========================================= */
+
+.review-section{
+    margin-top:40px;
+    padding:30px;
+    background:#ffffff;
+    border-radius:18px;
+    box-shadow:0 8px 25px rgba(0,0,0,0.08);
+}
+
+
+/* Rating Summary */
+
+.rating-summary{
+    text-align:center;
+    padding:25px;
+    margin-bottom:30px;
+    background:#f8fafc;
+    border-radius:15px;
+}
+
+
+.average-rating{
+    font-size:42px;
+    font-weight:700;
+    color:#111827;
+}
+
+
+.star-rating{
+    color:#fbbf24;
+    font-size:28px;
+    letter-spacing:4px;
+}
+
+
+.total-reviews{
+    margin-top:8px;
+    color:#6b7280;
+    font-size:15px;
+}
+
+
+/* Review Form */
+
+.review-form{
+    background:#f9fafb;
+    padding:25px;
+    border-radius:15px;
+    margin-bottom:35px;
+}
+
+
+.review-form textarea{
+
+    width:100%;
+    min-height:120px;
+
+    border:1px solid #ddd;
+    border-radius:12px;
+
+    padding:15px;
+
+    font-size:15px;
+
+    resize:none;
+
+    outline:none;
+}
+
+
+.review-form textarea:focus{
+
+    border-color:#2563eb;
+
+    box-shadow:0 0 0 3px rgba(37,99,235,0.15);
+
+}
+
+
+/* Submit Button */
+
+.review-submit-btn{
+
+    margin-top:15px;
+
+    background:linear-gradient(
+        135deg,
+        #2563eb,
+        #1d4ed8
+    );
+
+    color:white;
+
+    border:none;
+
+    padding:12px 30px;
+
+    border-radius:30px;
+
+    font-size:16px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+
+.review-submit-btn:hover{
+
+    transform:translateY(-2px);
+
+    box-shadow:0 8px 20px rgba(37,99,235,.3);
+
+}
+
+
+
+/* Review Card */
+
+.review-card{
+
+    padding:20px;
+
+    margin-bottom:20px;
+
+    border-radius:15px;
+
+    background:white;
+
+    border:1px solid #eee;
+
+    transition:.3s;
+
+}
+
+
+.review-card:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+
+}
+
+
+
+/* User Avatar */
+
+.review-avatar{
+
+    width:45px;
+
+    height:45px;
+
+    border-radius:50%;
+
+    background:#2563eb;
+
+    color:white;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-weight:700;
+
+    font-size:18px;
+
+}
+
+
+.review-header{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+
+}
+
+
+.review-user{
+
+    font-weight:700;
+
+    font-size:16px;
+
+}
+
+
+.review-date{
+
+    color:#6b7280;
+
+    font-size:13px;
+
+    margin-top:5px;
+
+}
+
+
+.review-text{
+
+    margin-top:15px;
+
+    color:#374151;
+
+    line-height:1.6;
+
+}
+
+
+.review-stars{
+
+    color:#f59e0b;
+
+    font-size:20px;
+
+}
+/* Download Invoice Button */
+
+.invoice-btn{
+
+  margin-top:15px;
+
+  padding:10px 18px;
+
+  border:none;
+
+  border-radius:8px;
+
+  background:#2563eb;
+
+  color:white;
+
+  font-size:14px;
+
+  font-weight:600;
+
+  cursor:pointer;
+
+  transition:0.3s ease;
+
+}
+
+
+.invoice-btn:hover{
+
+  background:#1d4ed8;
+
+  transform:translateY(-2px);
+
+}
+
+
+.invoice-btn:active{
+
+  transform:scale(0.96);
+
+}
+.order-details-container{
+
+max-width:900px;
+margin:40px auto;
+padding:20px;
+
+}
+
+
+.order-header{
+
+background:white;
+padding:25px;
+border-radius:15px;
+box-shadow:0 5px 20px rgba(0,0,0,0.1);
+margin-bottom:25px;
+
+}
+
+
+.order-status{
+
+display:inline-block;
+background:#28a745;
+color:white;
+padding:8px 18px;
+border-radius:20px;
+font-weight:bold;
+
+}
+
+
+
+.order-section{
+
+background:white;
+padding:25px;
+border-radius:15px;
+margin-bottom:25px;
+box-shadow:0 5px 20px rgba(0,0,0,0.08);
+
+}
+
+
+
+.order-item{
+
+border:1px solid #ddd;
+padding:15px;
+border-radius:10px;
+margin-bottom:15px;
+
+}
+
+
+
+.address-card,
+.payment-card{
+
+background:#f5f5f5;
+padding:20px;
+border-radius:10px;
+
+}
+.loader-container{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:300px;
+}
