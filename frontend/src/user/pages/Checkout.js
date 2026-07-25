@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../services/api";
@@ -19,7 +20,7 @@ function Checkout() {
 
 
   const [payment,setPayment] = useState("COD");
-
+const [showPaymentPopup,setShowPaymentPopup] = useState(false);
 
   const handleChange = (e)=>{
 
@@ -34,38 +35,91 @@ function Checkout() {
   };
 
 
-  const placeOrder = async()=>{
-
-    try{
+const placeOrder = async()=>{
 
 
-const response = await api.post("/orders/place",{
+  if(payment === "ONLINE"){
 
-  ...address,
-  payment
+    setShowPaymentPopup(true);
 
-});
+    return;
 
-
-navigate(
-  `/order-success/${response.data.orderId}`
-);
-
-    }
-    catch(err){
-
-      console.log(err);
-
-      alert(
-        err.response?.data?.message ||
-        "Failed to place order"
-      );
-
-    }
-
-  };
+  }
 
 
+  try{
+
+
+    const response = await api.post("/orders/place",{
+
+      ...address,
+      payment
+
+    });
+
+
+    navigate(
+      `/order-success/${response.data.orderId}`
+    );
+
+
+  }
+  catch(err){
+
+    console.log(err);
+
+    alert(
+      err.response?.data?.message ||
+      "Failed to place order"
+    );
+
+  }
+
+
+};
+
+const paymentSuccess = async()=>{
+
+  try{
+
+    const response = await api.post("/orders/place",{
+
+      ...address,
+      payment:"ONLINE"
+
+    });
+
+
+    setShowPaymentPopup(false);
+
+alert("Payment Successful");
+    navigate(
+      `/order-success/${response.data.orderId}`
+    );
+
+
+  }
+catch(err){
+
+  console.log(err.response?.data || err);
+
+  alert(
+    err.response?.data?.message ||
+    "Payment Failed"
+  );
+
+}
+};
+
+
+
+const paymentFailed = ()=>{
+
+  setShowPaymentPopup(false);
+
+  alert("Payment Cancelled");
+
+};
   return (
 
     <div className="checkoutPage">
@@ -172,13 +226,44 @@ navigate(
 
 
       </div>
+{
+showPaymentPopup && (
+
+  <div className="paymentPopup">
+
+    <div className="paymentCard">
+
+      <h2>
+        💳 Demo Payment Gateway
+      </h2>
+
+      <p>
+        Demo payment only. No real money deducted.
+      </p>
+
+
+      <button onClick={paymentSuccess}>
+✅ Confirm Payment
+      </button>
+
+
+      <button onClick={paymentFailed}>
+  ❌ Cancel Payment
+</button>
 
 
     </div>
 
+  </div>
+
+)
+}
+
+    </div>
   );
 
 }
+
 
 
 export default Checkout;

@@ -1,3 +1,5 @@
+const sendEmail = require("../services/emailService");
+const welcomeTemplate = require("../templates/welcomeTemplate");
 const db = require("../config/db");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
@@ -61,7 +63,18 @@ if (!email || !password) {
       ]
     );
 
-    res.status(201).json({
+try {
+  await sendEmail({
+    to: email,
+    subject: "Welcome to BookStore",
+    html: welcomeTemplate(name)
+  });
+
+  console.log("Welcome email sent.");
+} catch (err) {
+  console.error("Welcome Email Error:", err.message);
+}    
+res.status(201).json({
       message: "Registration Successful",
       user: {
         id: result.insertId,

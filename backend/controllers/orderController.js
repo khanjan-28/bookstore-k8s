@@ -1,6 +1,8 @@
+
 const db = require("../config/db");
 const PDFDocument = require("pdfkit");
-
+const sendEmail = require("../services/emailService");
+const orderPlacedTemplate = require("../templates/orderPlacedTemplate");
 
 // ==============================
 // PLACE ORDER
@@ -22,21 +24,42 @@ exports.placeOrder = async (req, res) => {
       payment
     } = req.body;
 
+let paymentStatus = "Pending";
+let paymentId = null;
+let transactionId = null;
 
-    const [cartItems] = await db.query(
-      `
-      SELECT
-        cart.book_id,
-        cart.quantity,
-        books.price
-      FROM cart
-      JOIN books
-      ON cart.book_id = books.id
-      WHERE cart.user_id=?
-      `,
-      [userId]
-    );
 
+// Demo Online Payment
+if (payment === "ONLINE") {
+
+  paymentStatus = "Paid";
+
+  paymentId =
+    "PAY_" +
+    Date.now() +
+    Math.floor(Math.random() * 10000);
+
+
+  transactionId =
+    "TXN_" +
+    Date.now() +
+    Math.floor(Math.random() * 10000);
+
+}
+const [cartItems] = await db.query(
+  `
+  SELECT
+    cart.book_id,
+    cart.quantity,
+    books.title,
+    books.price
+  FROM cart
+  JOIN books
+  ON cart.book_id = books.id
+  WHERE cart.user_id=?
+  `,
+  [userId]
+);
 
     if(cartItems.length === 0){
 
@@ -53,37 +76,47 @@ exports.placeOrder = async (req, res) => {
       0
     );
 
+const [users] = await db.query(
+  `SELECT name, email FROM users WHERE id=?`,
+  [userId]
+);
 
-    const [order] = await db.query(
-      `
-      INSERT INTO orders
-      (
-        user_id,
-        total_price,
-        full_name,
-        phone,
-        address,
-        city,
-        state,
-        pincode,
-        payment_method
-      )
+const user = users[0];
+const [order] = await db.query(
+  `
+  INSERT INTO orders
+  (
+    user_id,
+    total_price,
+    full_name,
+    phone,
+    address,
+    city,
+    state,
+    pincode,
+    payment_method,
+    payment_status,
+    payment_id,
+    transaction_id
+  )
 
-      VALUES(?,?,?,?,?,?,?,?,?)
-      `,
-      [
-        userId,
-        total,
-        fullName,
-        phone,
-        address,
-        city,
-        state,
-        pincode,
-        payment
-      ]
-    );
-
+  VALUES(?,?,?,?,?,?,?,?,?,?,?,?)
+  `,
+  [
+    userId,
+    total,
+    fullName,
+    phone,
+    address,
+    city,
+    state,
+    pincode,
+    payment,
+    paymentStatus,
+    paymentId,
+    transactionId
+  ]
+);
 
 
     for(const item of cartItems){
@@ -117,15 +150,39 @@ exports.placeOrder = async (req, res) => {
       [userId]
     );
 
+try {
+console.log("Sending email to:", user.email);
+await sendEmail({
+  to: user.email,
+  subject: "Order Placed Successfully",
+  html: orderPlacedTemplate({
+    customerName: user.name,
+    orderId: order.insertId,
+    total,
+    paymentMethod: payment,
+    orderDate: new Date(),
+    books: cartItems
+  })
+});
+  console.log("Order email sent.");
+} catch (err) {
+  console.error("Email Error:", err.message);
+}
+res.json({
 
-    res.json({
+  message:"Order placed successfully",
 
-      message:"Order placed successfully",
+  orderId:order.insertId,
 
-      orderId:order.insertId
+  paymentMethod: payment,
 
-    });
+  paymentStatus,
 
+  paymentId,
+
+  transactionId
+
+});
 
 
   }
@@ -589,7 +646,7 @@ doc
     40,
     boxY,
     245,
-    120,
+    100,
     8
   )
   .fillAndStroke(
@@ -612,27 +669,24 @@ doc
 doc
   .font("Helvetica")
   .fontSize(9)
-  .text(
-    `Name : ${order.name}`,
-    55,
-    boxY+40
-  )
-  .text(
-    `Email : ${order.email}`,
-    55,
-    boxY+58
-  )
-  .text(
-    `Phone : ${order.phone}`,
-    55,
-    boxY+76
-  )
-  .text(
-    `Address : ${order.address}`,
-    55,
-    boxY+94
-  );
-
+.text(
+  `Name : ${order.name}`,
+  55,
+  boxY+40
+)
+.text(
+  `Email : ${order.email}`,
+  55,
+  boxY+58
+)
+.text(
+  `Address : ${order.address}, ${order.city}, ${order.state} - ${order.pincode}`,
+  55,
+  boxY+76,
+  {
+    width:200
+  }
+);
 
 
 // ORDER DETAILS BOX
@@ -642,7 +696,7 @@ doc
     310,
     boxY,
     245,
-    120,
+    100,
     8
   )
   .fillAndStroke(
