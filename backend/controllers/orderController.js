@@ -1,7 +1,7 @@
 
 const db = require("../config/db");
 const PDFDocument = require("pdfkit");
-const sendEmail = require("../services/emailService");
+const { sendEmail, sendRefundEmail } = require("../services/emailService");
 const orderPlacedTemplate = require("../templates/orderPlacedTemplate");
 
 // ==============================
@@ -280,12 +280,14 @@ exports.getOrderDetails = async (req, res) => {
         orders.city,
         orders.state,
         orders.pincode,
-        orders.payment_method,
+orders.payment_method,
+orders.payment_status,
+orders.refund_status,
+orders.refund_id,
+orders.refund_date,
 
-        users.name,
-        users.email
-
-
+users.name,
+users.email
       FROM orders
 
 
@@ -899,6 +901,142 @@ doc
 
 
   }
+
+
+};
+
+
+
+
+
+
+// ==============================
+// USER CANCEL ORDER
+// ==============================
+
+exports.cancelOrder = async(req,res)=>{
+
+
+try{
+
+
+const orderId=req.params.id;
+
+
+const [orders]=await db.query(
+
+`
+SELECT
+status,
+payment_method,
+total_price
+FROM orders
+WHERE id=? AND user_id=?
+`,
+
+[
+orderId,
+req.user.id
+]
+
+);
+
+
+
+if(orders.length===0){
+
+return res.status(404).json({
+message:"Order not found"
+});
+
+}
+
+
+
+if(
+orders[0].status==="Shipped" ||
+orders[0].status==="Delivered"
+){
+
+return res.status(400).json({
+
+message:"Order cannot be cancelled"
+
+});
+
+}
+
+
+
+const order = orders[0];
+
+if (order.payment_method === "ONLINE") {
+
+  const refundId =
+    "REF_" +
+    Date.now() +
+    Math.floor(Math.random() * 10000);
+
+await db.query(
+    `
+    UPDATE orders
+    SET
+      status='Cancelled',
+      payment_status='Refunded',
+      refund_status='Refunded',
+      refund_id=?,
+      refund_amount=?,
+      refund_date=NOW()
+    WHERE id=?
+    `,
+    [
+      refundId,
+      order.total_price,
+      orderId
+    ]
+);
+await sendRefundEmail({
+  email: req.user.email,
+  name: "Customer",
+  orderId: orderId,
+  refundId: refundId,
+  amount: order.total_price
+});
+} else {
+
+  await db.query(
+    `
+    UPDATE orders
+    SET status='Cancelled'
+    WHERE id=?
+    `,
+    [
+      orderId
+    ]
+  );
+
+}
+
+
+res.json({
+
+message:"Order cancelled successfully"
+
+});
+
+
+}
+catch(err){
+
+console.log(err);
+
+res.status(500).json({
+
+message:"Server Error"
+
+});
+
+}
 
 
 };

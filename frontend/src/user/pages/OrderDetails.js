@@ -85,6 +85,33 @@ console.log(err);
 }
 
 };
+const cancelOrder = async () => {
+
+const confirmCancel = window.confirm(
+"Are you sure you want to cancel this order?"
+);
+
+if (!confirmCancel) return;
+
+try {
+
+await api.put(`/orders/cancel/${id}`);
+
+alert("Order cancelled successfully");
+
+loadOrder();
+
+}
+catch (err) {
+
+alert(
+err.response?.data?.message ||
+"Unable to cancel order"
+);
+
+}
+
+};
 if(!data){
 
 return <h2>Loading...</h2>;
@@ -120,22 +147,115 @@ Order #{data.order.id}
 {data.order.status}
 
 </span>
+{
+data.order.status === "Cancelled" &&
 
+<div className="cancel-status">
 
+❌ Order Cancelled
+
+</div>
+
+}
+{
+data.order.status === "Cancelled" ? (
+
+<div className="order-timeline">
+
+<div className="step active">
+📦
+<span>Placed</span>
+</div>
+
+<div className="step cancelled">
+❌
+<span>Cancelled</span>
+</div>
+
+</div>
+
+) : (
+
+<div className="order-timeline">
+
+<div className="step active">
+📦
+<span>Placed</span>
+</div>
+
+<div
+className={
+data.order.status === "Processing" ||
+data.order.status === "Shipped" ||
+data.order.status === "Delivered"
+?
+"step active"
+:
+"step"
+}
+>
+⚙️
+<span>Processing</span>
+</div>
+
+<div
+className={
+data.order.status === "Shipped" ||
+data.order.status === "Delivered"
+?
+"step active"
+:
+"step"
+}
+>
+🚚
+<span>Shipped</span>
+</div>
+
+<div
+className={
+data.order.status === "Delivered"
+?
+"step active"
+:
+"step"
+}
+>
+✅
+<span>Delivered</span>
+</div>
+
+</div>
+
+)
+}
 <p>
 Order Total:
 <b> ₹{data.order.total_price}</b>
 </p>
+
+
+{
+(data.order.status === "Placed" ||
+data.order.status === "Processing") &&
+
+<button
+className="cancel-btn"
+onClick={cancelOrder}
+>
+❌ Cancel Order
+</button>
+}
+
+
 <button
  className="invoice-btn"
  onClick={downloadInvoice}
 >
 📄 Download Invoice
 </button>
+
 </div>
-
-
-
 <div className="order-section">
 
 <h2>
@@ -227,13 +347,49 @@ Pincode: {data.order.pincode}
 
 <div className="payment-card">
 
-{data.order.payment_method}
+<p>
+Method:
+<b>{data.order.payment_method || "COD"}</b>
+</p>
+
+
+<p>
+Status:
+<b>{data.order.payment_status}</b>
+</p>
+{
+data.order.refund_status && (
+
+<>
+<p>
+Refund Status:
+<b>{data.order.refund_status}</b>
+</p>
+
+<p>
+Refund ID:
+<b>{data.order.refund_id}</b>
+</p>
+
+<p>
+Refund Date:
+<b>
+{
+new Date(
+data.order.refund_date
+).toLocaleString()
+}
+</b>
+</p>
+</>
+
+)
+}
 
 </div>
 
 
 </div>
-
 
 
 </div>

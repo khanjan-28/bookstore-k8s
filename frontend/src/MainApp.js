@@ -1,3 +1,5 @@
+import AdminLogin from "./pages/AdminLogin";
+import AdminDashboard from "./pages/AdminDashboard";
 import AdminOrderDetails from "./pages/AdminOrderDetails";
 import { useState } from "react";
 import Auth from "./user/pages/Auth";
@@ -35,9 +37,16 @@ return (
 {/* Admin Panel */}
 
 <Route
+path="/admin/login"
+element={<AdminLogin />}
+/>
+
+
+<Route
 path="/admin"
 element={<App />}
 />
+
 
 <Route
 path="/admin/order/:id"

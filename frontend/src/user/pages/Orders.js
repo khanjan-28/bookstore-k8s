@@ -117,11 +117,69 @@ const downloadInvoice = async (id) => {
                   ₹{order.total_price}
                 </p>
 
-                <p>
-                  Status :
-                  {order.status}
-                </p>
+<p>
+  Status :
+  <span
+    className={`status ${order.status.toLowerCase()}`}
+  >
+    {order.status}
+  </span>
+</p>
+<div className="mini-timeline">
 
+  <span
+    className={
+      order.status === "Placed" ||
+      order.status === "Processing" ||
+      order.status === "Shipped" ||
+      order.status === "Delivered"
+        ? "active"
+        : ""
+    }
+  >
+    📦
+  </span>
+
+  ────
+
+  <span
+    className={
+      order.status === "Processing" ||
+      order.status === "Shipped" ||
+      order.status === "Delivered"
+        ? "active"
+        : ""
+    }
+  >
+    ⚙️
+  </span>
+
+  ────
+
+  <span
+    className={
+      order.status === "Shipped" ||
+      order.status === "Delivered"
+        ? "active"
+        : ""
+    }
+  >
+    🚚
+  </span>
+
+  ────
+
+  <span
+    className={
+      order.status === "Delivered"
+        ? "active"
+        : ""
+    }
+  >
+    ✅
+  </span>
+
+</div>
                 <p>
                   {new Date(
                     order.created_at
@@ -134,9 +192,10 @@ const downloadInvoice = async (id) => {
   Download Invoice 📄
 </button>
 <button
+  className="track-btn"
   onClick={() => navigate(`/order/${order.id}`)}
 >
-  👁 View Details
+  🚚 Track Order
 </button>
               </div>
 

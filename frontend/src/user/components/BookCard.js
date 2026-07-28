@@ -14,14 +14,19 @@ const addToCart = async () => {
 
     alert("🛒 Added to Cart");
 
-  } catch (err) {
+}
 
-    console.log(err);
+catch (err) {
 
-    alert("Failed to add cart");
+  console.log(err);
+  console.log(err.response);
 
-  }
+  alert(
+    err.response?.data?.message ||
+    err.message
+  );
 
+}
 };
 
 const addToWishlist = async () => {

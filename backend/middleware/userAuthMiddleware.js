@@ -1,7 +1,9 @@
 const jwt = require("jsonwebtoken");
 
 const verifyUser = (req, res, next) => {
+
   const authHeader = req.headers.authorization;
+  console.log("Authorization Header:", authHeader);
 
   if (!authHeader) {
     return res.status(401).json({
@@ -10,6 +12,7 @@ const verifyUser = (req, res, next) => {
   }
 
   const token = authHeader.split(" ")[1];
+  console.log("Token:", token);
 
   if (!token) {
     return res.status(401).json({
@@ -24,11 +27,15 @@ const verifyUser = (req, res, next) => {
       process.env.JWT_SECRET || "bookstore_secret"
     );
 
+    console.log("Decoded User:", decoded);
+
     req.user = decoded;
 
     next();
 
   } catch (err) {
+
+    console.log("JWT Error:", err.message);
 
     return res.status(401).json({
       message: "Token Expired or Invalid"

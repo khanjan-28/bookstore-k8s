@@ -7,6 +7,10 @@ const orderController = require("../controllers/orderController");
 const auth = require("../middleware/userAuthMiddleware");
 
 
+// ==============================
+// PLACE ORDER
+// ==============================
+
 router.post(
   "/place",
   auth,
@@ -14,17 +18,49 @@ router.post(
 );
 
 
+// ==============================
+// USER ORDERS
+// ==============================
+
 router.get(
   "/",
   auth,
   orderController.getOrders
 );
 
+
+// ==============================
+// ADMIN ALL ORDERS
+// ==============================
+
+
+
+// ==============================
+// USER CANCEL ORDER
+// ==============================
+
+router.put(
+  "/cancel/:id",
+  auth,
+  orderController.cancelOrder
+);
+
+
+// ==============================
+// INVOICE
+// ==============================
+
 router.get(
   "/:id/invoice",
   auth,
   orderController.generateInvoice
 );
+
+
+// ==============================
+// SINGLE ORDER DETAILS
+// ==============================
+
 router.get(
   "/:id",
   auth,

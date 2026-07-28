@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import "../App.css";
 
@@ -14,6 +15,18 @@ import { exportToPDF } from "../utils/export";
 
 function AdminDashboard(){
 
+const navigate = useNavigate();
+
+const logout = ()=>{
+
+localStorage.removeItem("token");
+localStorage.removeItem("user");
+
+navigate("/admin/login");
+
+};
+
+
 const [books,setBooks]=useState([]);
 
 const [stats,setStats]=useState({
@@ -21,7 +34,6 @@ totalBooks:0,
 totalCategories:0,
 averagePrice:0
 });
-
 
 const [loading,setLoading]=useState(false);
 
@@ -311,7 +323,12 @@ onClick={()=>setDarkMode(!darkMode)}
 
 </button>
 
-
+<button
+className="logoutBtn"
+onClick={logout}
+>
+Logout
+</button>
 </nav>
 
 

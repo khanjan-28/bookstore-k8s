@@ -58,7 +58,7 @@ Order #{order.id}
 </h2>
 
 
-<div className={`status-badge ${order.status.toLowerCase()}`}>
+<div className={`status-badge ${(order.status || "Placed").toLowerCase()}`}>
     {order.status}
 </div>
 <div className="order-timeline">
@@ -98,7 +98,10 @@ order.status === "Delivered"
 Customer:
 {order.user_name}
 </p>
-
+<p>
+Email:
+{order.email}
+</p>
 
 <p>
 Total:
@@ -140,7 +143,19 @@ Pincode: {order.pincode}
 <h2>💳 Payment Details</h2>
 
 <p>
-Method: {order.payment_method}
+Method: {order.payment_method || "COD"}
+</p>
+
+<p>
+Payment Status: {order.payment_status}
+</p>
+
+<p>
+Payment ID: {order.payment_id || "N/A"}
+</p>
+
+<p>
+Transaction ID: {order.transaction_id || "N/A"}
 </p>
 
 </div>

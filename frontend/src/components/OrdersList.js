@@ -37,31 +37,33 @@ console.log(err);
 
 
 
-const updateStatus=async(id)=>{
+const updateStatus = async (id) => {
 
-try{
+  try {
 
-await api.put(
-`/admin/orders/${id}`,
-{
-status:status[id]
-}
-);
+    await api.put(
+      `/admin/orders/${id}`,
+      {
+        status: status[id]
+      }
+    );
 
+    alert("Order status updated successfully");
 
-loadOrders();
+    loadOrders();
 
+  } catch (err) {
 
-}
+    console.log(err);
 
-catch(err){
+    alert(
+      err.response?.data?.message ||
+      "Unable to update order"
+    );
 
-console.log(err);
-
-}
+  }
 
 };
-
 
 
 
@@ -99,21 +101,33 @@ Customer:
 <b>{order.user_name}</b>
 </p>
 
+<p>
+Email:
+<b>{order.email}</b>
+</p>
 
 <p>
 Total:
 <b> ₹{order.total_price}</b>
 </p>
 
-
 <p>
 Payment:
 <b>{order.payment_method || "COD"}</b>
 </p>
+
+<p>
+Payment Status:
+<b>{order.payment_status}</b>
+</p>
+
 <p>
 Date:
-<b>{order.created_at}</b>
+<b>
+{new Date(order.created_at).toLocaleDateString()}
+</b>
 </p>
+
 <p>
 Status:
 
@@ -123,16 +137,16 @@ Status:
 
 </p>
 
-
 <div className="status-box">
 
 
 <select
 
+disabled={order.status === "Cancelled"}
+
 value={
 status[order.id] || order.status
 }
-
 
 onChange={(e)=>
 
@@ -147,10 +161,12 @@ setStatus({
 }
 
 >
-
-
 <option>
 Placed
+</option>
+
+<option>
+Processing
 </option>
 
 <option>
@@ -161,12 +177,15 @@ Shipped
 Delivered
 </option>
 
+<option>
+Cancelled
+</option>
 
 </select>
 
-
-
 <button
+
+disabled={order.status === "Cancelled"}
 
 onClick={()=>updateStatus(order.id)}
 

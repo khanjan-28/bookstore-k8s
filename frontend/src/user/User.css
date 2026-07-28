@@ -1173,3 +1173,82 @@ border-radius:10px;
   font-size:16px;
 
 }
+.cancel-btn{
+background:#dc2626;
+color:#fff;
+border:none;
+padding:10px 18px;
+border-radius:6px;
+cursor:pointer;
+margin-right:10px;
+font-weight:bold;
+}
+
+.cancel-btn:hover{
+background:#b91c1c;
+}
+
+.cancel-status{
+margin-top:10px;
+color:#dc2626;
+font-weight:bold;
+}
+
+.step.cancelled{
+color:#dc2626;
+font-weight:bold;
+}
+.track-btn{
+background:#2563eb;
+color:#fff;
+border:none;
+padding:10px 18px;
+border-radius:6px;
+cursor:pointer;
+margin-left:10px;
+}
+
+.track-btn:hover{
+background:#1d4ed8;
+}
+
+.status{
+padding:4px 10px;
+border-radius:20px;
+margin-left:8px;
+font-weight:bold;
+color:#fff;
+}
+
+.status.placed{
+background:#2563eb;
+}
+
+.status.processing{
+background:#f59e0b;
+}
+
+.status.shipped{
+background:#7c3aed;
+}
+
+.status.delivered{
+background:#16a34a;
+}
+
+.status.cancelled{
+background:#dc2626;
+}
+
+.mini-timeline{
+margin:15px 0;
+font-size:20px;
+}
+
+.mini-timeline span{
+opacity:.3;
+}
+
+.mini-timeline .active{
+opacity:1;
+}
